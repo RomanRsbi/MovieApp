@@ -1,0 +1,32 @@
+.movie-card {
+  width: 451px;
+  height: 279px;
+  border-radius: 0;
+  margin-bottom: 35px;
+  box-shadow: 0px 4px 12px 0px #00000026;
+}
+
+.img-size {
+  display: 'block';
+  width: 183px;
+  height: 277px;
+  border-radius: none;
+}
+
+.margin-style {
+  margin-bottom: 10px;
+}
+
+.text-size {
+  font-size: 12px;
+}
+
+.title-size {
+  font-size: 20px !important;
+}
+
+.spin-style {
+  position: absolute;
+  left: 80px;
+  top: 110px;
+}
