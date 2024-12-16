@@ -1,12 +1,12 @@
 import { Component, Fragment } from 'react';
 import './App.css';
-import { Alert, Pagination } from 'antd';
+import { Alert, Tabs } from 'antd';
 import { debounce } from 'lodash';
 
-import { MovieCardList } from './components/MovieCardList/MovieCardList';
 import getResource from './components/NetworkRequestFile';
 import { NetworkContext } from './components/NetworkProvider';
-import { SearchInput } from './components/SearchInput/SearchInput';
+import { SearchTab } from './components/SearchTab/SearchTab';
+import { RatedTab } from './components/RatedTab/RatedTab';
 
 type formatObj = {
   poster_path: string;
@@ -81,6 +81,12 @@ class App extends Component {
     });
   };
 
+  pageFunc = (page: number) => {
+    this.setState({
+      pageOne: page
+    });
+  };
+
   debounceFn = debounce(this.getResponse, 1200);
 
   componentDidUpdate(prevProps: unknown, prevState: { label: string; pageOne: number }) {
@@ -99,23 +105,32 @@ class App extends Component {
           <Fragment>
             {isOnline ? (
               <div className="movie-app">
-                <SearchInput searchFn={this.searchFn} />
-                <MovieCardList
-                  movieList={this.state.movieList}
-                  loading={this.state.loading}
-                  error={this.state.error}
-                  errorMessage={this.state.errorMessage}
-                />
-                <Pagination
-                  align="center"
-                  className={this.state.loading || this.state.movieList.length === 0 ? 'pagination-fix' : undefined}
-                  defaultCurrent={this.state.pageOne}
-                  total={this.state.totalPages}
-                  onChange={page => {
-                    this.setState({
-                      pageOne: page
-                    });
-                  }}
+                <Tabs
+                  defaultActiveKey="1"
+                  centered
+                  items={[
+                    {
+                      label: 'Search',
+                      key: '1',
+                      children: (
+                        <SearchTab
+                          searchFn={this.searchFn}
+                          movieList={this.state.movieList}
+                          loading={this.state.loading}
+                          error={this.state.error}
+                          errorMessage={this.state.errorMessage}
+                          pageOne={this.state.pageOne}
+                          totalPages={this.state.totalPages}
+                          pageFunc={this.pageFunc}
+                        />
+                      )
+                    },
+                    {
+                      label: 'Rated',
+                      key: '3',
+                      children: <RatedTab />
+                    }
+                  ]}
                 />
               </div>
             ) : (
@@ -131,3 +146,38 @@ class App extends Component {
 }
 
 export { App };
+
+{
+  /* <NetworkContext.Consumer>
+  {isOnline => (
+    <Fragment>
+      {isOnline ? (
+        <div className="movie-app">
+          <SearchInput searchFn={this.searchFn} />
+          <MovieCardList
+            movieList={this.state.movieList}
+            loading={this.state.loading}
+            error={this.state.error}
+            errorMessage={this.state.errorMessage}
+          />
+          <Pagination
+            align="center"
+            className={this.state.loading || this.state.movieList.length === 0 ? 'pagination-fix' : undefined}
+            defaultCurrent={this.state.pageOne}
+            total={this.state.totalPages}
+            onChange={page => {
+              this.setState({
+                pageOne: page
+              });
+            }}
+          />
+        </div>
+      ) : (
+        <div className="movie-app">
+          <Alert message="Error" description="No internet connection" type="error" showIcon />
+        </div>
+      )}
+    </Fragment>
+  )}
+</NetworkContext.Consumer>; */
+}
