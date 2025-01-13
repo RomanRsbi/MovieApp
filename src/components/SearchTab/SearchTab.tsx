@@ -14,7 +14,9 @@ interface formatC {
   title: string;
   release_date: string;
   overview: string;
-  id?: number;
+  id: number;
+  vote_average: number;
+  genre_ids: number[];
 }
 
 interface movListType extends searchFormat {
@@ -23,7 +25,8 @@ interface movListType extends searchFormat {
   error: boolean;
   errorMessage: string;
   pageOne: number;
-  totalPages: number;
+  totalResults: number;
+  sessionId: string;
 }
 
 class SearchTab extends Component<movListType> {
@@ -36,16 +39,22 @@ class SearchTab extends Component<movListType> {
           loading={this.props.loading}
           error={this.props.error}
           errorMessage={this.props.errorMessage}
+          sessionId={this.props.sessionId}
         />
-        <Pagination
-          align="center"
-          className={this.props.loading || this.props.movieList.length === 0 ? 'pagination-fix' : undefined}
-          defaultCurrent={this.props.pageOne}
-          total={this.props.totalPages}
-          onChange={page => {
-            this.props.pageFunc(page);
-          }}
-        />
+        {this.props.loading ? null : (
+          <Pagination
+            align="center"
+            showSizeChanger={false}
+            hideOnSinglePage={true}
+            defaultPageSize={20}
+            current={this.props.pageOne}
+            defaultCurrent={1}
+            total={this.props.totalResults}
+            onChange={page => {
+              this.props.pageFunc(page);
+            }}
+          />
+        )}
       </Fragment>
     );
   }

@@ -8,7 +8,9 @@ type formatC = {
   title: string;
   release_date: string;
   overview: string;
-  id?: number;
+  id: number;
+  vote_average: number;
+  genre_ids: number[];
 };
 
 interface movListType {
@@ -16,11 +18,12 @@ interface movListType {
   loading: boolean;
   error: boolean;
   errorMessage: string;
+  sessionId: string;
 }
 
 const MovieCardList = (props: movListType) => {
   const oneCard = props.movieList.map((el: formatC) => {
-    return <MovieCard {...el} key={el.id} loading={props.loading} />;
+    return <MovieCard {...el} key={el.id} loading={props.loading} sessionId={props.sessionId} />;
   });
 
   const hasDate = !(props.error || props.loading);

@@ -23,3 +23,17 @@
 .type-input:hover {
   border-color: #4096ff;
 }
+
+@media (max-width: 450px) {
+  .type-input {
+    max-width: 378px;
+    height: 40px;
+    display: block;
+    margin: auto;
+    border: 1px solid #d9d9d9;
+    border-radius: 4px;
+    margin-top: 10px;
+    padding-left: 10px;
+    outline: 0;
+  }
+}
